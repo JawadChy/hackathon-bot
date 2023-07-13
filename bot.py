@@ -101,5 +101,24 @@ async def hackathons(interaction: discord.Interaction, specifier:str = ""):
     else:
         await interaction.response.send_message(stringToSend + "View the full list of MLH's 2024 Season Hackathons here : https://mlh.io/seasons/2024/events")
 
+@bot.tree.command(name="help", description="Get help on how to use the bot!")
+async def help(interaction: discord.Interaction):
+    helpString = """
+    Here are the commands you can use with this bot:
+
+    /hello - Say hello to Dog the Bird!
+
+    /bye - Say bye to Dog the Bird!
+
+    /crazy - Want to hear something crazy?
+
+    /hackathons - View up to 7 hackathons.
+
+    /hackathons some_specifier - Replace some specifier with ongoing, upcoming, ended, online, or a location to view hackathons of that specific type.
+    """
+
+    await interaction.response.send_message(helpString)
+
+
 
 bot.run(discord_token)
