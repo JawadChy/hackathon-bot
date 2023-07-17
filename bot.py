@@ -46,7 +46,7 @@ async def crazy(interaction: discord.Interaction):
 @bot.tree.command(name="hackathons", description="View some of MLH's 2024 Season Hackathons!")
 @app_commands.describe(specifier = "Some specifier. Ex: upcoming, ongoing, ended, online, or a city or state")
 # TODO : add more args soon
-# @app_commands.describe(number_of_hackathons = "The maximum number of hackathons you want the bot to output. Set to 7 by default. The highest is 12.")
+# @app_commands.describe(number_of_hackathons = "The maximum number of hackathons you want the bot to output. Set to 15 by default. The highest is 12.")
 async def hackathons(interaction: discord.Interaction, specifier:str = ""):
     stringToSend = ""
     hackathonCount = 0
@@ -68,23 +68,23 @@ async def hackathons(interaction: discord.Interaction, specifier:str = ""):
         return
     
     for hackathon in h.hackathons:
-        # if no arg was provided display the upto 7 soonest hackathons (Displays both upcoming and ongoing)
+        # if no arg was provided display the upto 15 soonest hackathons (Displays both upcoming and ongoing)
         if specifier == "" and hackathon.status != "Hackathon has ended.":
             stringToSend += hackathonString(hackathon)
             hackathonCount += 1
-        # if arg is upcoming display upto 7 soonest hackathons (Only display upcoming)
+        # if arg is upcoming display upto 15 soonest hackathons (Only display upcoming)
         elif specifier == "upcoming" and hackathon.status != "Hackathon has ended." and hackathon.status != "Hackathon is ongoing!":
             stringToSend += hackathonString(hackathon)
             hackathonCount += 1
-        # if arg is ongoing display upto 7 soonest hackathons (Only display ongoing)
+        # if arg is ongoing display upto 15 soonest hackathons (Only display ongoing)
         elif specifier == "ongoing" and hackathon.status == "Hackathon is ongoing!":
             stringToSend += hackathonString(hackathon)
             hackathonCount += 1
-        # if arg is ended display upto 7 ended hackathons
+        # if arg is ended display upto 15 ended hackathons
         elif specifier == "ended" and hackathon.status == "Hackathon has ended.":
             stringToSend += hackathonString(hackathon)
             hackathonCount += 1
-        # if arg is online display upto 7 hackathons that are online only
+        # if arg is online display upto 15 hackathons that are online only
         elif specifier == "online" and hackathon.location == "Everywhere, Worldwide":
             stringToSend += hackathonString(hackathon)
             hackathonCount += 1
@@ -93,13 +93,26 @@ async def hackathons(interaction: discord.Interaction, specifier:str = ""):
                 stringToSend += hackathonString(hackathon)
                 hackathonCount += 1
 
-        if hackathonCount == 7:
+        if hackathonCount == 15:
             break
         
     if stringToSend == "":
-        await interaction.response.send_message("No hackathons found that fit your specifications.")
+        hackathonEmbed = discord.Embed(
+            title="😵‍💫",
+            description="No hackathons found that fit your specifications.",
+            color=0xe33939
+        )
+
     else:
-        await interaction.response.send_message(stringToSend + "View the full list of MLH's 2024 Season Hackathons here : https://mlh.io/seasons/2024/events")
+        hackathonEmbed = discord.Embed(
+            title="🎉",
+            description=stringToSend,
+            color=0x79AEFE,
+            url="https://mlh.io/seasons/2024/events"
+        )
+        
+    hackathonEmbed.set_footer(text="View the full list of MLH's 2024 Season Hackathons here : https://mlh.io/seasons/2024/events")
+    await interaction.response.send_message(embed=hackathonEmbed)
 
 @bot.tree.command(name="help", description="Get help on how to use Dog the Bird's commands")
 async def help(interaction: discord.Interaction):
@@ -110,7 +123,7 @@ async def help(interaction: discord.Interaction):
         color=0x79AEFE
     )
 
-    helpEmbed.add_field(name="**/hackathons**", value="View up to 7 upcoming and/or ongoing hackathons.", inline=False)
+    helpEmbed.add_field(name="**/hackathons**", value="View up to 15 upcoming and/or ongoing hackathons.", inline=False)
     helpEmbed.add_field(name="**/hackathons some_specifier**", value="Replace some specifier with ongoing, upcoming, ended, online, or a location to view hackathons of that specific type. For example, `/hackathons upcoming` will show you upcoming hackathons.", inline=False)
     helpEmbed.add_field(name="**/hello**", value="Say hello to Dog the Bird!", inline=False)
     helpEmbed.add_field(name="**/bye**", value="Say bye to Dog the Bird!", inline=False)
