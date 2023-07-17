@@ -101,24 +101,24 @@ async def hackathons(interaction: discord.Interaction, specifier:str = ""):
     else:
         await interaction.response.send_message(stringToSend + "View the full list of MLH's 2024 Season Hackathons here : https://mlh.io/seasons/2024/events")
 
-@bot.tree.command(name="help", description="Get help on how to use the bot!")
+@bot.tree.command(name="help", description="Get help on how to use Dog the Bird's commands")
 async def help(interaction: discord.Interaction):
-    helpString = """
-    Here are the commands you can use with this bot:
 
-    /hello - Say hello to Dog the Bird!
+    helpEmbed = discord.Embed(
+        title="Help 📖",
+        description="**Help Commands -**",
+        color=0x79AEFE
+    )
 
-    /bye - Say bye to Dog the Bird!
+    helpEmbed.add_field(name="**/hackathons**", value="View up to 7 upcoming and/or ongoing hackathons.", inline=False)
+    helpEmbed.add_field(name="**/hackathons some_specifier**", value="Replace some specifier with ongoing, upcoming, ended, online, or a location to view hackathons of that specific type. For example, `/hackathons upcoming` will show you upcoming hackathons.", inline=False)
+    helpEmbed.add_field(name="**/hello**", value="Say hello to Dog the Bird!", inline=False)
+    helpEmbed.add_field(name="**/bye**", value="Say bye to Dog the Bird!", inline=False)
+    helpEmbed.add_field(name="**/crazy**", value="Crazy?", inline=False)
 
-    /crazy - Want to hear something crazy?
+    avatar_url = getattr(interaction.user.avatar, 'url', None)
+    
+    helpEmbed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=avatar_url)
 
-    /hackathons - View up to 7 hackathons.
-
-    /hackathons some_specifier - Replace some specifier with ongoing, upcoming, ended, online, or a location to view hackathons of that specific type.
-    """
-
-    await interaction.response.send_message(helpString)
-
-
-
+    await interaction.response.send_message(embed=helpEmbed)
 bot.run(discord_token)
